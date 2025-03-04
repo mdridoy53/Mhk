@@ -3,34 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App v1.3 - Earn & Withdraw</title>
+    <title>Telegram Mini App - Earn & Withdraw</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>🎉 Earn & Withdraw Rewards (v1.3)</h1>
+        <h1>🎉 Watch Ads & Earn Rewards</h1>
+        <p id="user-info">Loading user info...</p>
+        <p>Your Points: <span id="points">0</span></p>
 
-        <div class="profile">
-            <h3>👤 Your Profile</h3>
-            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
-            <p><strong>Points:</strong> <span id="points">0</span></p>
-        </div>
+        <iframe id="ad-frame" src="" width="300" height="250" style="border:none;"></iframe>
 
-        <iframe id="ad-frame" src="https://www.effectiveratecpm.com/r4qnrdccj?key=03ce16e4127f9bc35aae93ce4d66d334" width="300" height="250" style="border:none;"></iframe>
-
-        <button class="button" id="click-button" onclick="startAdCountdown()" disabled>🎯 Click & Earn (<span id="clicks-left">20</span>/20)</button>
-        <p id="ad-timer" style="display:none;">Wait <span id="countdown">10</span> seconds...</p>
-
-        <button class="button" onclick="spinWheel()">🎡 Daily Spin</button>
-        <button class="button" onclick="withdrawPoints()">💰 Withdraw (10,000 min)</button>
-
-        <div class="referral-section">
-            <h3>🔗 Invite & Earn</h3>
-            <p>Refer a friend & earn <strong>1000 points</strong>!</p>
-            <input type="text" id="referral-link" readonly>
-            <button class="button" onclick="copyReferralLink()">📋 Copy Referral Link</button>
-        </div>
+        <button class="button" id="click-button" onclick="trackAdClick()">🎯 Click & Earn</button>
+        <button class="button" id="withdraw-button" onclick="withdrawPoints()">💰 Withdraw Points</button>
 
         <div class="leaderboard">
             <h3>🏆 Top Earners</h3>
