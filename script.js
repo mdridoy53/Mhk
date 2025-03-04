@@ -29,9 +29,9 @@ let userPoints = localStorage.getItem("userPoints") || 0;
 document.getElementById("points").innerText = userPoints;
 
 let ads = [
-    "https://www.effectiveratecpm.com/qschfd5z?key=ad1",
-    "https://www.effectiveratecpm.com/xlmjhf4y?key=ad2",
-    "https://www.effectiveratecpm.com/abcd1234?key=ad3"
+    "https://www.effectiveratecpm.com/qschfd5z?key=ee0e875b31525fef397349a8c33fe2af",
+    "https://www.effectiveratecpm.com/qschfd5z?key=ee0e875b31525fef397349a8c33fe2af",
+    "https://www.effectiveratecpm.com/qschfd5z?key=ee0e875b31525fef397349a8c33fe2af"
 ];
 let currentAdIndex = 0;
 
