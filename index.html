@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App - Earn & Withdraw</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Watch Ads & Earn Rewards</h1>
+        <p id="user-info">Loading user info...</p>
+        <p>Your Points: <span id="points">0</span></p>
+
+        <iframe id="ad-frame" src="" width="300" height="250" style="border:none;"></iframe>
+
+        <button class="button" id="click-button" onclick="trackAdClick()">🎯 Click & Earn</button>
+        <button class="button" id="withdraw-button" onclick="withdrawPoints()">💰 Withdraw Points</button>
+
+        <div class="leaderboard">
+            <h3>🏆 Top Earners</h3>
+            <ul id="leaderboard-list">
+                <li>Loading...</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
