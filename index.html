@@ -9,14 +9,26 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎉 Watch Ads & Earn Rewards</h1>
-        <p id="user-info">Loading user info...</p>
-        <p>Your Points: <span id="points">0</span></p>
+        <h1>🎉 Earn & Withdraw Rewards</h1>
 
-        <iframe id="ad-frame" src="" width="300" height="250" style="border:none;"></iframe>
+        <div class="profile">
+            <h3>👤 Your Profile</h3>
+            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+            <p><strong>Points:</strong> <span id="points">0</span></p>
+        </div>
 
-        <button class="button" id="click-button" onclick="trackAdClick()">🎯 Click & Earn</button>
-        <button class="button" id="withdraw-button" onclick="withdrawPoints()">💰 Withdraw Points</button>
+        <iframe id="ad-frame" src="https://example.com/ad" width="300" height="250" style="border:none;"></iframe>
+
+        <button class="button" onclick="trackAdClick()">🎯 Click & Earn (<span id="clicks-left">20</span>/20)</button>
+        <button class="button" onclick="spinWheel()">🎡 Daily Spin</button>
+        <button class="button" onclick="withdrawPoints()">💰 Withdraw (10,000 min)</button>
+
+        <div class="referral-section">
+            <h3>🔗 Invite & Earn</h3>
+            <p>Refer a friend & earn <strong>1000 points</strong>!</p>
+            <input type="text" id="referral-link" readonly>
+            <button class="button" onclick="copyReferralLink()">📋 Copy Referral Link</button>
+        </div>
 
         <div class="leaderboard">
             <h3>🏆 Top Earners</h3>
