@@ -29,9 +29,9 @@ let userPoints = localStorage.getItem("userPoints") || 0;
 document.getElementById("points").innerText = userPoints;
 
 let ads = [
-    "https://oodruhoufouzair.com/4/8896018",
-    "https://oodruhoufouzair.com/4/8896018",
-    "https://oodruhoufouzair.com/4/8896018"
+    "https://www.effectiveratecpm.com/qimtabv63?key=766f0822f57fcb7f8ec6bdb9feb6392f",
+    "https://www.effectiveratecpm.com/qimtabv63?key=766f0822f57fcb7f8ec6bdb9feb6392f",
+    "https://www.effectiveratecpm.com/qimtabv63?key=766f0822f57fcb7f8ec6bdb9feb6392f"
 ];
 let currentAdIndex = 0;
 
