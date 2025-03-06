@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WS TOKEN INCOME</title>
+    <title>Telegram Mini App - Earn & Withdraw</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,13 +13,9 @@
         <p id="user-info">Loading user info...</p>
         <p>Your Points: <span id="points">0</span></p>
 
-        <!-- Add a button to show ad -->
-        <button class="button" id="show-ad-button" onclick="showRewardedAd()">🎯 Show Ad & Earn</button>
-
-        <!-- Ad Display -->
-        <div id="ad-status">Loading ad...</div>
         <iframe id="ad-frame" src="" width="300" height="250" style="border:none;"></iframe>
 
+        <button class="button" id="click-button" onclick="trackAdClick()">🎯 Click & Earn</button>
         <button class="button" id="withdraw-button" onclick="withdrawPoints()">💰 Withdraw Points</button>
 
         <div class="leaderboard">
