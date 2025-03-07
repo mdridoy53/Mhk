@@ -60,4 +60,71 @@ function loadAdsBasedOnVersion() {
     loadAds(selectedVersion);
 }
 
-// Function to load ads dynamically into ad 
+// Function to load ads dynamically into ad slots
+function loadAds(version = 'v1') {
+    const adFrames = document.querySelectorAll('.ad-slot');
+    const selectedAds = ads[version];
+
+    adFrames.forEach((frame, index) => {
+        // Dynamically set the ad URL for each slot
+        frame.src = selectedAds[index % selectedAds.length]; // Cycle through ads based on selected version
+    });
+
+    // Track the ad version interactions
+    adInteractions[version] += 1;
+    console.log(`Ad Version ${version} shown: ${adInteractions[version]} times.`);
+}
+
+// Function to handle ad loading error
+function handleAdError(adFrame) {
+    // Log the error to the console for debugging
+    console.error(`Error loading ad in ${adFrame.id}`);
+
+    // Set a fallback message or image
+    adFrame.src = "";  // Clear the src
+    adFrame.style.border = "2px solid red";  // Indicate an error visually
+    adFrame.innerHTML = "Ad failed to load. Please try again later.";  // Show an error message
+}
+
+// Function to track ad click and reward points
+function trackAdClick() {
+    const currentTime = Date.now();
+    const timePassed = (currentTime - lastClickTime) / 1000; // Time passed in seconds
+
+    if (timePassed < 60) {
+        // If the user clicked an ad less than a minute ago
+        if (clicks >= 35) {
+            const minutesRemaining = Math.floor((60 - timePassed) / 60);
+            const secondsRemaining = Math.floor((60 - timePassed) % 60);
+            document.getElementById('reminder-message').textContent = `You can click again in ${minutesRemaining} minute(s) and ${secondsRemaining} second(s).`;
+            return;
+        }
+    } else {
+        // Reset click count if a minute has passed
+        clicks = 0;
+    }
+
+    points += 10; // Reward 10 points for clicking
+    clicks += 1; // Increment the number of clicks
+    lastClickTime = currentTime; // Update the last click time
+    document.getElementById('points').textContent = points;
+    updateLeaderboard(); // Update leaderboard with new points
+
+    document.getElementById('reminder-message').textContent = `You've earned 10 points!`;
+
+    alert("You've earned 10 points for clicking the ad!");
+}
+
+// Function to simulate withdrawing points
+function withdrawPoints() {
+    if (points > 0) {
+        alert(`You have successfully withdrawn ${points} points!`);
+        points = 0; // Reset points after withdrawal
+        document.getElementById('points').textContent = points;
+    } else {
+        alert("You don't have any points to withdraw.");
+    }
+}
+
+// Initialize ads with default version (v1) when the page loads
+loadAds('v1'); // Load ads into all ad slots when the page loads
