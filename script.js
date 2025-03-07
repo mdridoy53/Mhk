@@ -1,134 +1,136 @@
-// Assuming you're using Telegram Web App API and an external ad SDK
-const botToken = "7434724514:AAF6BsLMHp6jyDnVQTqnSYbKkgBCXF9ox2w"; // Your bot token
-const chatId = "7987662357";  // Your chat ID
+// Simulated Data (You can replace with real API calls)
+let points = 0;
+let clicks = 0; // Track number of clicks in the last minute
+let lastClickTime = 0; // Store last click time
+let dailyClickLimit = 35; // Max daily clicks
+let dailyClickCount = 0; // Track clicks for the day
+let sessionStartTime = Date.now(); // Track user session time
+let user = { id: 1, username: "user1" };
 
-const userInfoElement = document.getElementById("user-info");
-const pointsElement = document.getElementById("points");
-const leaderboardList = document.getElementById("leaderboard-list");
-const adStatusElement = document.getElementById("ad-status");
-const adFrame = document.getElementById("ad-frame");
-
-let user = {
-    name: "Guest",
-    id: null,
-    points: 0
+// Ad slots array (with version info and different URLs per version)
+let ads = {
+    v1: [
+        "https://www.effectiveratecpm.com/z0hair4i?key=52993e542fe1abed7e17dca47793a91b",
+        "https://www.effectiveratecpm.com/z0hair4i?key=52993e542fe1abed7e17dca47793a91c"
+    ],
+    v2: [
+        "https://www.effectiveratecpm.com/z0hair4i?key=2f93a542fe1abed7e17dca47793a91b",
+        "https://www.effectiveratecpm.com/z0hair4i?key=2f93a542fe1abed7e17dca47793a91c"
+    ],
+    v3: [
+        "https://www.effectiveratecpm.com/z0hair4i?key=3d83b542fe1abed7e17dca47793a91b",
+        "https://www.effectiveratecpm.com/z0hair4i?key=3d83b542fe1abed7e17dca47793a91c"
+    ]
 };
 
-// Initialize Telegram Web App
-const tg = window.Telegram.WebApp;
+// Initialize leaderboard
+let leaderboard = [
+    { username: "user1", points: 100 },
+    { username: "user2", points: 80 },
+    { username: "user3", points: 60 },
+    { username: "user4", points: 50 },
+];
 
-// Fetch user info from Telegram Web App API
-async function loadUserInfo() {
-    try {
-        const userDetails = tg.initDataUnsafe;
-        user = {
-            name: userDetails.user.first_name || "Guest",
-            id: userDetails.user.id,
-            points: userDetails.user.points || 0
-        };
-        userInfoElement.textContent = `Welcome, ${user.name}`;
-        pointsElement.textContent = user.points;
-    } catch (err) {
-        console.error("Error loading user info:", err);
-        userInfoElement.textContent = "Failed to load user info.";
-    }
+// Track user clicks and interactions
+let adInteractions = {
+    v1: 0,
+    v2: 0,
+    v3: 0
+};
+
+// Theme management
+let isDarkMode = false;
+
+// Displaying user info
+document.getElementById('user-info').textContent = `Logged in as: ${user.username}`;
+
+// Leaderboard
+function updateLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboard-list');
+    leaderboardList.innerHTML = ''; // Clear current list
+
+    leaderboard.sort((a, b) => b.points - a.points); // Sort by points in descending order
+
+    leaderboard.forEach(entry => {
+        const li = document.createElement('li');
+        li.textContent = `${entry.username}: ${entry.points} points`;
+        leaderboardList.appendChild(li);
+    });
 }
 
-// Show rewarded ad and reward the user
-async function showRewardedAd() {
-    adStatusElement.textContent = "Loading ad...";
+updateLeaderboard(); // Initial leaderboard update
 
-    try {
-        // Simulate showing ad (replace with your actual ad function)
-        await show_9045455(); // This is your ad function, replace with actual SDK call
-
-        // After the ad is shown, reward the user
-        user.points += 10;  // Reward points for watching the ad
-        pointsElement.textContent = user.points;
-        adStatusElement.textContent = "Ad completed! You've earned 10 points!";
-        
-        // Send a message to your Telegram bot when the user watches an ad and earns points
-        const message = `User ${user.name} watched an ad and earned 10 points!`;
-        sendTelegramMessage(message);
-
-        alert("You have watched the ad! You've earned 10 points!");
-    } catch (error) {
-        console.error("Error showing rewarded ad:", error);
-        adStatusElement.textContent = "Failed to load the ad. Please try again later.";
-        alert("Failed to load the ad. Please try again later.");
-    }
+// Function to load ads dynamically based on version selected
+function loadAdsBasedOnVersion() {
+    const selectedVersion = document.getElementById('ad-version').value;
+    loadAds(selectedVersion);
 }
 
-// Function to send a message to your Telegram bot
-async function sendTelegramMessage(message) {
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+// Function to load ads dynamically into ad slots
+function loadAds(version = 'v1') {
+    const adFrames = document.querySelectorAll('.ad-slot');
+    const selectedAds = ads[version];
 
-    const payload = {
-        chat_id: chatId,
-        text: message,
-    };
+    adFrames.forEach((frame, index) => {
+        // Dynamically set the ad URL for each slot
+        frame.src = selectedAds[index % selectedAds.length]; // Cycle through ads based on selected version
+    });
 
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        const data = await response.json();
-        if (data.ok) {
-            console.log("Message sent successfully:", data);
-        } else {
-            console.error("Error sending message:", data);
-        }
-    } catch (error) {
-        console.error("Error sending message:", error);
-    }
+    // Track the ad version interactions
+    adInteractions[version] += 1;
+    console.log(`Ad Version ${version} shown: ${adInteractions[version]} times.`);
 }
 
-// Handle withdrawal
-async function withdrawPoints() {
-    if (user.points >= 50) {  // Minimum withdrawal threshold
-        try {
-            await fetch('https://api.example.com/withdraw', {
-                method: 'POST',
-                body: JSON.stringify({ userId: user.id, points: user.points }),
-                headers: { 'Content-Type': 'application/json' }
-            });
-            alert(`You successfully withdrew ${user.points} points!`);
-            user.points = 0;
-            pointsElement.textContent = user.points;
-        } catch (error) {
-            alert("Error during withdrawal, please try again later.");
+// Function to track ad click and reward points
+function trackAdClick() {
+    const currentTime = Date.now();
+    const timePassed = (currentTime - lastClickTime) / 1000; // Time passed in seconds
+
+    if (timePassed < 60) {
+        // If the user clicked an ad less than a minute ago
+        if (clicks >= 35) {
+            const minutesRemaining = Math.floor((60 - timePassed) / 60);
+            const secondsRemaining = Math.floor((60 - timePassed) % 60);
+            document.getElementById('reminder-message').textContent = `You can click again in ${minutesRemaining} minute(s) and ${secondsRemaining} second(s).`;
+            return;
         }
     } else {
-        alert("You need at least 50 points to withdraw.");
+        // Reset click count if a minute has passed
+        clicks = 0;
+    }
+
+    // Track daily click limit
+    if (dailyClickCount >= dailyClickLimit) {
+        alert("You've reached your daily click limit!");
+        return;
+    }
+
+    points += 10; // Reward 10 points for clicking
+    dailyClickCount += 1; // Increment daily click count
+    clicks += 1; // Increment the number of clicks
+    lastClickTime = currentTime; // Update the last click time
+    document.getElementById('points').textContent = points;
+    updateLeaderboard(); // Update leaderboard with new points
+
+    document.getElementById('reminder-message').textContent = `You've earned 10 points!`;
+
+    alert("You've earned 10 points for clicking the ad!");
+}
+
+// Function to simulate withdrawing points
+function withdrawPoints() {
+    if (points > 0) {
+        alert(`You have successfully withdrawn ${points} points!`);
+        points = 0; // Reset points after withdrawal
+        document.getElementById('points').textContent = points;
+    } else {
+        alert("You don't have any points to withdraw.");
     }
 }
 
-// Fetch leaderboard dynamically (simulated API call)
-async function loadLeaderboard() {
-    try {
-        const response = await fetch('https://api.example.com/getLeaderboard');  // Replace with actual API
-        const leaderboard = await response.json();
-        leaderboardList.innerHTML = ''; // Clear existing list
-        leaderboard.forEach(earner => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${earner.name} - ${earner.points} Points`;
-            leaderboardList.appendChild(listItem);
-        });
-    } catch (error) {
-        leaderboardList.innerHTML = `<li>Error loading leaderboard.</li>`;
-        console.error("Error loading leaderboard:", error);
-    }
-}
-
-// Initialize app
-function init() {
-    loadUserInfo();
-    loadLeaderboard();
-}
-
-init();
+// Toggle Dark Mode
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById
