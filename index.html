@@ -6,26 +6,6 @@
     <title>Telegram Mini App - Earn & Withdraw</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        #theme-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-        }
-
-        body.dark-mode {
-            background-color: #121212;
-            color: white;
-        }
-
-        body.dark-mode .container {
-            background-color: #333;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -35,9 +15,9 @@
 
         <!-- Multiple Ad Slots -->
         <div id="ads-container">
-            <iframe class="ad-slot" id="ad-frame-1" width="300" height="250" style="border:none;"></iframe>
-            <iframe class="ad-slot" id="ad-frame-2" width="300" height="250" style="border:none;"></iframe>
-            <iframe class="ad-slot" id="ad-frame-3" width="300" height="250" style="border:none;"></iframe>
+            <iframe class="ad-slot" id="ad-frame-1" width="300" height="250" style="border:none;" onerror="handleAdError(this)"></iframe>
+            <iframe class="ad-slot" id="ad-frame-2" width="300" height="250" style="border:none;" onerror="handleAdError(this)"></iframe>
+            <iframe class="ad-slot" id="ad-frame-3" width="300" height="250" style="border:none;" onerror="handleAdError(this)"></iframe>
         </div>
 
         <!-- Version Selector -->
@@ -65,9 +45,6 @@
         <!-- Click Limit Reminder -->
         <div id="reminder-message" style="margin-top: 15px; color: red;"></div>
     </div>
-
-    <!-- Dark Mode Switch -->
-    <button id="theme-switcher" onclick="toggleTheme()">🌙</button>
 
     <script src="script.js"></script>
 </body>
